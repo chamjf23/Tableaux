@@ -137,20 +137,22 @@ def clasificacion(f):
 	# Output: string de la clasificación de la formula
    # if f.label  == "=":
     #    return "Alfa5" + "("+f.left+"->"+f.right+")"+"Y"+"("+f.right+"->"+f.left+")"
-    if f.label == "Y":
-        return "Alfa2" #+  "("+f.left+")"+"Y"+"("+f.right+")"
-    elif f.label == "-" and f.right == "O":
-        return "Alfa3"#+"("+"-"+f.left+")"+"Y"+"("+"-"+f.right+")"
-    elif f.label == "-" and f.right == "->":
-        return "Alfa4"#+"("+f.left+")"+"Y"+"("+"-"+f.right+")"
-    elif f.label == "-" and f.right == "-":
-        return "Alfa1"#+"("+f.right+")"
-    elif f.label == ">":
-        return "Beta3"# + "("+"-"+f.left+")"+"O"+"("+f.right+")" 
-    elif f.label == "O":
-        return "Beta2"# + "("+f.left+")"+"O"+"("+f.right+")" 
-    elif f.label == "-" and f.right == "Y":
-        return "Beta1"# + "("+"-"+f.left+")"+"O"+"("+"-"+f.right+")" 
+    if f.label == 'Y':
+        return "Alfa2" 
+    elif f.label == '-' and f.right.label == 'O':
+        return "Alfa3"
+    elif f.label == '-' and f.right.label == '>':
+        return "Alfa4"
+    elif f.label == '-' and f.right.label == '-':
+        return "Alfa1"
+    elif f.label == '>':
+        return "Beta3"
+    elif f.label == 'O':
+        return "Beta2"
+    elif f.label == '-' and f.right.label == 'Y':
+        return "Beta1" 
+    else:
+        return "error en la clasificacion"
 
 def clasifica_y_extiende(f):
 	# clasifica una fórmula como alfa o beta y extiende listaHojas

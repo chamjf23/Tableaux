@@ -102,11 +102,72 @@ def no_literales(l):
             	pass
     	return False
 
+def clasificacion(f):
+	# clasifica una fórmula como alfa o beta
+	# Input: f, una fórmula como árbol
+	# Output: string de la clasificación de la formula
+   # if f.label  == "=":
+    #    return "Alfa5" + "("+f.left+"->"+f.right+")"+"Y"+"("+f.right+"->"+f.left+")"
+    if f.label == "Y":
+        return "Alfa2" #+  "("+f.left+")"+"Y"+"("+f.right+")"
+    elif f.label == "-" and f.right == "O":
+        return "Alfa3"#+"("+"-"+f.left+")"+"Y"+"("+"-"+f.right+")"
+    elif f.label == "-" and f.right == "->":
+        return "Alfa4"#+"("+f.left+")"+"Y"+"("+"-"+f.right+")"
+    elif f.label == "-" and f.right == "-":
+        return "Alfa1"#+"("+f.right+")"
+    elif f.label == ">":
+        return "Beta3"# + "("+"-"+f.left+")"+"O"+"("+f.right+")" 
+    elif f.label == "O":
+        return "Beta2"# + "("+f.left+")"+"O"+"("+f.right+")" 
+    elif f.label == "-" and f.right == "Y":
+        return "Beta1"# + "("+"-"+f.left+")"+"O"+"("+"-"+f.right+")" 
+
 def clasifica_y_extiende(f):
 	# clasifica una fórmula como alfa o beta y extiende listaHojas
 	# de acuerdo a la regla respectiva
 	# Input: f, una fórmula como árbol
 	# Output: no tiene output, pues modifica la variable global listaHojas
+    if clasificacion(f)== "Alfa1":
+        derecho = f.right.right
+        listaHojas.remove([f]) #elimina la lista f 
+        listaHojas.append(derecho)#doble negación
+    elif clasificacion(f)== "Alfa2":
+        izquierdo = f.left
+        derecho = f.right
+        listaHojas.remove([f]) #elimina la lista f 
+        lista = [izquierdo,derecho]
+        listaHojas.append(lista)
+    elif clasificacion(f)== "Alfa3":
+        izquierdo = Tree("-", None,f.left)
+        derecho = Tree("-",None,f.right)
+        listaHojas.remove([f]) #elimina la lista f 
+        lista = [izquierdo,derecho]
+        listaHojas.append(lista)
+    elif clasificacion(f)== "Alfa4":
+        izquierdo = f.left
+        derecho = Tree("-",None,f.right)
+        lista = [izquierdo,derecho]
+        listaHojas.remove([f]) #elimina la lista f 
+        listaHojas.append(lista)
+    elif clasificacion(f)== "Beta1":
+        izquierdo = Tree("-",None,f.left)
+        derechoo = Tree("-",None,f.right)
+        listaHojas.remove([f])
+        listaHojas.append(izquierdo)
+        listaHojas.append(derecho)
+    elif clasificacion(f)== "Beta2":
+        izquierdo = f.left
+        dercho = f.right
+        listaHojas.remove([f])
+        listaHojas.append(izquierdo)
+        listaHojas.append(derecho)
+    elif clasificacion(f)== "Beta3":
+        izquierdo = Tree("-",None,f.left)
+        derecho = f.right
+        listaHojas.remove([f])
+        listaHojas.append(izquierdo)
+        listaHojas.append(derecho)
 	global listaHojas
 
 def Tableaux(f):

@@ -185,7 +185,7 @@ def Tableaux(f):
 	listaHojas = [[A]]
     while len(listaHojas)>0:
         hoja= choice(listaHojas)
-        if (no_literales(hoja)=True):
+        if (no_literales(hoja)==True):
             if (par_complementario(hoja)==True):
                 listaHojas.remove(hoja)
             else:
@@ -194,4 +194,4 @@ def Tableaux(f):
         else:
             clasifica_y_extiende(hoja)
 
-	return listaInterpsVerdaderas
+    return listaInterpsVerdaderas

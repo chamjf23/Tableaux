@@ -180,8 +180,18 @@ def Tableaux(f):
 	#		 verdadera a f
 	global listaHojas
 	global listaInterpsVerdaderas
-
-	A = string2Tree(f)
+    
+	A = StringtoTree(f)
 	listaHojas = [[A]]
+    while len(listaHojas)>0:
+        hoja= choice(listaHojas)
+        if (no_literales(hoja)=True):
+            if (par_complementario(hoja)==True):
+                listaHojas.remove(hoja)
+            else:
+                listaInterpsVerdaderas.append(hoja)
+                listaHojas.remove(hoja)
+        else:
+            clasifica_y_extiende(hoja)
 
 	return listaInterpsVerdaderas

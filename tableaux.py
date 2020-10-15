@@ -59,11 +59,22 @@ def imprime_hoja(H):
 	return cadena + "}"
 
 def par_complementario(l):
-	# Esta función determina si una lista de solo literales
-	# contiene un par complementario
-	# Input: l, una lista de literales
-	# Output: True/False
-	return False
+    letrasProposicionales=[chr(x) for x in range(97, 123)]
+    letrasProposicionales.append("1")
+    letrasProposicionales.append("2")
+    letrasProposicionales.append("3")
+    ver = False
+    for i in l:
+        arbol1 = i
+        for e in l:
+            arbol_com = e
+            if arbol1.label == '-':
+                if arbol_com.label != '-' and arbol1.right.label == arbol_com.label:
+                    ver = True
+            elif arbol1.label == letrasProposicionales:
+                if arbol_com.label == '-' and arbol1.label == arbol_com.right.label:
+                    ver = True
+    return ver
 
 def es_literal(f):
 	# Esta función determina si el árbol f es un literal

@@ -6,6 +6,8 @@ from random import choice
 
 # Crea las letras minúsculas a-z
 letrasProposicionales = [chr(x) for x in range(97, 123)]
+conectivosbinarios = ['Y','O','>','<->']
+negacion = ['-']
 # inicializa la lista de interpretaciones
 listaInterpsVerdaderas = []
 # inicializa la lista de hojas

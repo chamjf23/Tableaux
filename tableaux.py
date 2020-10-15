@@ -60,23 +60,33 @@ def imprime_hoja(H):
 		cadena += Inorder(f)
 	return cadena + "}"
 
-def par_complementario(l):
-    letrasProposicionales=[chr(x) for x in range(97, 123)]
-    letrasProposicionales.append("1")
-    letrasProposicionales.append("2")
-    letrasProposicionales.append("3")
-    ver = False
+def complemento(l):
+	# Esta función devuelve el complemento de un literal
+	# Input: l, un literal
+	# Output: x, un literal
+    if l[0] in negacion:
+        a=Tree(l[1],None,None)
+    elif l[0] in conectivosbinarios:
+        pass
+    else:
+        a=Tree('-',None,Tree(l,None,None))
+    return a
+def par_complementario2(l):
     for i in l:
-        arbol1 = i
-        for e in l:
-            arbol_com = e
-            if arbol1.label == '-':
-                if arbol_com.label != '-' and arbol1.right.label == arbol_com.label:
-                    ver = True
-            elif arbol1.label == letrasProposicionales:
-                if arbol_com.label == '-' and arbol1.label == arbol_com.right.label:
-                    ver = True
-    return ver
+        if (i.label in conectivosbinarios):
+            pass
+        elif (i.label in negacion):
+            if (i.right.label in negacion):
+                pass
+            else:
+                a='-'+i.label.right
+                if (complemento(a)in l):
+                    return True
+        else:
+            a=i.label
+            if (complemento(a)in l):
+                return True
+    return False
 def es_literal(f):
     # Esta función determina si el árbol f es un literal
     # Input: f, una fórmula como árbol

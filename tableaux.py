@@ -154,52 +154,49 @@ def clasificacion(f):
     else:
         return "error en la clasificacion"
 
-def clasifica_y_extiende(f):
-	# clasifica una fórmula como alfa o beta y extiende listaHojas
-	# de acuerdo a la regla respectiva
-	# Input: f, una fórmula como árbol
-	# Output: no tiene output, pues modifica la variable global listaHojas
-    if clasificacion(f)== "Alfa1":
-        derecho = f.right.right
-        listaHojas.remove([f]) #elimina la lista f 
-        listaHojas.append(derecho)#doble negación
-    elif clasificacion(f)== "Alfa2":
-        izquierdo = f.left
-        derecho = f.right
-        listaHojas.remove([f]) #elimina la lista f 
-        lista = [izquierdo,derecho]
-        listaHojas.append(lista)
-    elif clasificacion(f)== "Alfa3":
-        izquierdo = Tree("-", None,f.left)
-        derecho = Tree("-",None,f.right)
-        listaHojas.remove([f]) #elimina la lista f 
-        lista = [izquierdo,derecho]
-        listaHojas.append(lista)
-    elif clasificacion(f)== "Alfa4":
-        izquierdo = f.left
-        derecho = Tree("-",None,f.right)
-        lista = [izquierdo,derecho]
-        listaHojas.remove([f]) #elimina la lista f 
-        listaHojas.append(lista)
-    elif clasificacion(f)== "Beta1":
-        izquierdo = Tree("-",None,f.left)
-        derechoo = Tree("-",None,f.right)
-        listaHojas.remove([f])
-        listaHojas.append(izquierdo)
-        listaHojas.append(derecho)
-    elif clasificacion(f)== "Beta2":
-        izquierdo = f.left
-        dercho = f.right
-        listaHojas.remove([f])
-        listaHojas.append(izquierdo)
-        listaHojas.append(derecho)
-    elif clasificacion(f)== "Beta3":
-        izquierdo = Tree("-",None,f.left)
-        derecho = f.right
-        listaHojas.remove([f])
-        listaHojas.append(izquierdo)
-        listaHojas.append(derecho)
+
+def clasifica_y_extiende(f, h):
 	global listaHojas
+	print("Formula:", Inorder(f))
+	print("Hoja:", imprime_hoja(h))
+	assert(f in h), "La formula no esta en la lista!"
+	clase = clasificacion(f)
+	print("Clasificada como:", clase)
+	assert(clase != None), "Formula incorrecta " + imprime_hoja(h)
+	if clase == 'Alfa1':
+		aux = [x for x in h if x != f] + [f.right.right]
+		listaHojas.remove(h)
+		listaHojas.append(aux)
+	elif clase == 'Alfa2':
+		aux = [x for x in h if x != f] + [f.right] + [f.left]
+		listaHojas.remove(h)
+		listaHojas.append(aux)
+	elif clase == 'Alfa3':
+		aux = [x for x in h if x != f] + [complemento(f.right.left.label)] + [complemento(f.right.right.label)]
+		listaHojas.remove(h)
+		listaHojas.append(aux)
+	elif clase == 'Alfa4':
+		aux = [x for x in h if x != f] + [f.right.left] + [complemento(f.right.right.label)]
+		listaHojas.remove(h)
+		listaHojas.append(aux)
+	elif clase == 'Beta1':
+		aux = [x for x in h if x != f] + [complemento(f.right.left.label)]
+		listaHojas.remove(h)
+		listaHojas.append(aux)
+		aux2 = [x for x in h if x != f] + [complemento(f.right.right.label)]
+		listaHojas.append(aux2)
+	elif clase == 'Beta2':
+		aux =  [x for x in h if x != f] + [f.right]
+		listaHojas.remove(h)
+		listaHojas.append(aux)
+		aux2 = [x for x in h if x != f]+ [f.left]
+		listaHojas.append(aux2)
+	elif clase == 'Beta3':
+		aux = [x for x in h if x != f ] + [complemento(f.right.left.label)]
+		listaHojas.remove(h)
+		listaHojas.append(aux)
+		aux2 = [x for x in h if x != f]+ [f.left]
+		listaHojas.append(aux2)
 
 def Tableaux(f):
 

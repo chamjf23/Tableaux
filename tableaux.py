@@ -123,20 +123,27 @@ def complemento(l):
     else:
         a=Tree('-',None,Tree(l,None,None))
     return a
+
+def complemento2(l):
+	# Esta función devuelve el complemento de un literal
+	# Input: l, un literal
+	# Output: x, un literal
+    if '-' in l:
+            return l[1]
+    else:
+        l= '-'+l
+        return l
+
 def par_complementario(l):
+    # Esta función determina si una lista de solo literales
+	# contiene un par complementario
+	# Input: l, una lista de literales
+	# Output: True/False
+    lista=[Inorder(i) for i in l]
     for i in l:
-        if (i.label in conectivosbinarios):
-            pass
-        elif (i.label in negacion):
-            if (i.right.label in negacion):
-                pass
-            else:
-                a='-'+i.right.label
-                if (complemento(a)in l):
-                    return True
-        else:
-            a=i.label
-            if (complemento(a)in l):
+        if (i.label in negacion):
+            a= i.right.label
+            if a in lista:
                 return True
     return False                   
 def es_literal(f):
@@ -160,10 +167,10 @@ def no_literales(l):
 	# Output: None/f, tal que f no es literal
     for i in l:
         if (es_literal(i)==False):
-            return True
+            return i
         else:
             pass
-    return False
+    return None
 def clasificacion(f):
 	# clasifica una fórmula como alfa o beta
 	# Input: f, una fórmula como árbol
@@ -201,9 +208,12 @@ def clasifica_y_extiende(f, h):
 		listaHojas.remove(h)
 		listaHojas.append(aux)
 	elif clase == 'Alfa2':
+		print(Inorder(f.left), Inorder(f.right))
 		aux = [x for x in h if x != f] + [f.right] + [f.left]
 		listaHojas.remove(h)
 		listaHojas.append(aux)
+		
+        
 	elif clase == 'Alfa3': #como complemento recibe un literal no podemos pasarle un binario porque estariamos ignorando sus ramas
 		izquierdo = f.right.left.label 
 		derecho = f.right.right.label
@@ -275,48 +285,72 @@ def clasifica_y_extiende(f, h):
 		listaHojas.append(elim_repetidos(aux2))
 		aux = [] #hoja de la izquierda negacion de B1
 		aux2 = [] #hoja de la izquierda negacion de B2
-def Tableaux(f):
-    # Algoritmo de creacion de tableau a partir de lista_hojas
-    # Imput: - f, una fórmula como string en notación polaca inversa
-    # Output: interpretaciones: lista de listas de literales que hacen
-    #		 verdadera a f
-    global listaHojas
-    global listaInterpsVerdaderas
         
-    A = StringtoTree(f)
-    listaHojas = [[A]]
-    print(u'La fórmula introducida es:\n', Inorder(A))
-    while len(listaHojas)>0:
-        hoja= choice(listaHojas)
-        if (no_literales(hoja)==True):
-            if (par_complementario(hoja)==True):
-                listaHojas.remove(hoja)
-            else:
-                listaInterpsVerdaderas.append(hoja)
-                listaHojas.remove(hoja)
-        else:
-            clasifica_y_extiende(hoja)
+        
+        
+def Tableaux(f):
+
+	# Algoritmo de creacion de tableau a partir de lista_hojas
+	# Imput: - f, una fórmula como string en notación polaca inversa
+	# Output: interpretaciones: lista de listas de literales que hacen
+	#		 verdadera a f
+
+	global listaHojas
+	global listaInterpsVerdaderas
+
+	A = StringtoTree(f)
+	print(u'La fórmula introducida es:\n', Inorder(A))
+
+	listaHojas = [[A]]
+
+	while (len(listaHojas) > 0):
+		h = choice(listaHojas)
+		print("Trabajando con hoja:\n", imprime_hoja(h))
+		x = no_literales(h)
+		if x == None:
+			if par_complementario(h):
+				print(imprime_hoja(h))
+				listaHojas.remove(h)
+			else:
+                
+				listaInterpsVerdaderas.append(h)
+				listaHojas.remove(h)
+		else:
+			clasifica_y_extiende(x, h)
+
+	return listaInterpsVerdaderas
+        
+
+# def Tableaux(f):
+#     # Algoritmo de creacion de tableau a partir de lista_hojas
+#     # Imput: - f, una fórmula como string en notación polaca inversa
+#     # Output: interpretaciones: lista de listas de literales que hacen
+#     #		 verdadera a f
+#     global listaHojas
+#     global listaInterpsVerdaderas
+        
+#     A = StringtoTree(f)
+#     listaHojas = [[A]]
+#     tamaño = int(len(listaHojas))
+#     print(u'La fórmula introducida es:\n', Inorder(A))
+#     while len(listaHojas)>0:
+#         hoja= choice(listaHojas)
+#         if (no_literales(hoja)!=None):
+#             if (par_complementario(hoja)==True):
+#                 listaHojas.remove(hoja)
+#             else:
+#                 listaInterpsVerdaderas.append(hoja)
+#                 listaHojas.remove(hoja)
+#         else:
+#             clasifica_y_extiende(hoja)
             
-    if len(listaInterpsVerdaderas)>0:
-        a= ("abierto")
-    elif len(listaInterpsVerdaderas)==0:
-        a=("cerrado")
-    if (a=="abierto"):
-        print(a)
-        return listaInterpsVerdaderas
-    else:
-        print(a)
-        return None
-
- 
-
-f = Inorder2Tree('-(pO(rYs))')
-
-h = [f, Inorder2Tree('q'), Inorder2Tree('p')]
-
-listaHojas = [h]
-
-clasifica_y_extiende(f, h)
-
-imprime_listaHojas(listaHojas)
-
+#     if len(listaInterpsVerdaderas)>0:
+#         a= ("abierto")
+#     elif len(listaInterpsVerdaderas)==0 and int(len(listaHojas))==tamaño:
+#         a=("cerrado")
+#     if (a=="abierto"):
+#         print(a)
+#         return listaInterpsVerdaderas
+#     else:
+#         print(a)
+#         return None

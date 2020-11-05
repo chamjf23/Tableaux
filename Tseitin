@@ -62,7 +62,7 @@ def Tseitin(A, letrasProposicionalesA):
             A = A[1:]
             if len(A) > 0:
                 s= A[0]
-        elif (s = ")":
+        elif s == ")":
               w = Pila[-1]
               u = Pila[-2]
               v = Pila[-3]
@@ -109,7 +109,6 @@ def Clausula(C):
 # Input: A (cadena) en notacion inorder en FNC
 # Output: L (lista), lista de listas de literales
 def formaClausal(A):
-    def formaClausal(A):
     L=[]
     i=0
     while (len(A)>0):
